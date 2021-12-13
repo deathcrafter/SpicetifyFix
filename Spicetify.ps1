@@ -140,7 +140,6 @@ function FixSpicetify {
         return
     }
     spicetify config extensions webnowplaying.js
-    DisableSpicetifyThemes
     FixSpicetifyPrefsPath
     ApplySpicetify
 }
