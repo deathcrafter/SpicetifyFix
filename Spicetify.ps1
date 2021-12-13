@@ -6,7 +6,7 @@ function CheckSpotify {
     }
     return $true
 }
-if (!CheckSpotify) {
+if (!(CheckSpotify)) {
     return
 }
 function Install-Spicetify {
