@@ -40,7 +40,7 @@ if (!(IsSpicetifyAvailable)){
 }
 function ApplySpicetify {
     spicetify upgrade
-    spicetify restore backup apply
+    spicetify backup apply
 }
 function DisableSpicetifyThemes {
     spicetify config inject_css 0 replace_colors 0
