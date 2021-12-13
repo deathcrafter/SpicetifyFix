@@ -55,7 +55,7 @@ function InstallSpicetifyMarketPlace {
         "https://raw.githubusercontent.com/CharlieS1103/spicetify-marketplace/master/install.ps1" |
     Invoke-Expression
 }
-function FixSpicetifyPrefsPath {
+function FixSpicetifyPaths {
     function Get-IniContent {
         param(
             [Parameter(Mandatory)]
@@ -65,18 +65,21 @@ function FixSpicetifyPrefsPath {
 
         $ini = @{}
         switch -regex -file $FilePath {
-            “^\[(.+)\]” { # Section
+            “^\[(.+)\]” {
+                # Section
                 $section = $matches[1]
                 $ini[$section] = @{}
                 $CommentCount = 0
             }
-            “^(;.*)$” { # Comment
+            “^(;.*)$” {
+                # Comment
                 $value = $matches[1]
                 $CommentCount = $CommentCount + 1
                 $name = “Comment” + $CommentCount
                 $ini[$section][$name] = $value
             }
-            “(.+?)\s*=(.*)” { # Key
+            “(.+?)\s*=(.*)” {
+                # Key
                 $name, $value = $matches[1..2]
                 $ini[$section][$name] = $value
             }
@@ -126,6 +129,7 @@ function FixSpicetifyPrefsPath {
 
     if ([System.IO.File]::Exists($configPath)) {
         $ini = Get-IniContent -FilePath $configPath
+        $ini.Setting.spotify_path = "$($env:APPDATA)\Spotify"
         $ini.Setting.prefs_path = "$($env:APPDATA)\Spotify\prefs"
         Write-IniContent -InputObject $ini -FilePath $configPath
     }
@@ -140,6 +144,6 @@ function FixSpicetify {
         return
     }
     spicetify config extensions webnowplaying.js
-    FixSpicetifyPrefsPath
+    FixSpicetifyPaths
     ApplySpicetify
 }
